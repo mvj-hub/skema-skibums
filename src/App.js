@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import html2canvas from "html2canvas";
 const PERIODS = [
   "Vinter",
   "Forår 1",
@@ -28,7 +28,7 @@ const BLOCKS = [
     label: "Valgfag",
     bg: "#f8cc66",
     rowStart: 2,
-    rowEnd: 6,
+    rowEnd: 5,
     col: 1,
   },
   {
@@ -64,7 +64,7 @@ const BLOCKS = [
     label: "Valgfag",
     bg: "#dc6c53",
     rowStart: 2,
-    rowEnd: 5,
+    rowEnd: 6,
     col: 5,
   },
 ];
@@ -90,8 +90,8 @@ const SUBJECT_DEFINITIONS = [
     periods: ["Vinter"],
   },
   {
-    id: "selvudvikling-vinter",
-    title: "Selvudvikling (hovedfag)",
+    id: "Mindful-vinter",
+    title: "Mindful (hovedfag)",
     block: "orange",
     periods: ["Vinter"],
   },
@@ -825,16 +825,27 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
         ? "#FDBA74"
         : BLOCKS.find((b) => b.id === s.block)?.bg || "#eee",
   });
+  function downloadImage() {
+    // Find elementet, vi vil tage billede af
+    const skemaElement = document.getElementById("skema-container");
+    if (!skemaElement) return;
 
+    html2canvas(skemaElement).then((canvas) => {
+      const link = document.createElement("a");
+      link.download = `skema-${period}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
   return (
-<div
-  style={{
-    padding: 16,
-    minHeight: "70vh", // mindre høj
-    fontFamily: "Arial, sans-serif",
-    background: "#bedbd5",
-  }}
->
+    <div
+      style={{
+        padding: 16,
+        minHeight: "70vh", // mindre høj
+        fontFamily: "Arial, sans-serif",
+        background: "#bedbd5",
+      }}
+    >
       {/* Toplinje med titel og ryd-knap */}
       <div
         style={{
@@ -847,69 +858,93 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
         }}
       >
         {/* Titel */}
-        <h1 style={{ fontSize: 22, margin: 0 }}>Skemabygger</h1>
-
-        {/* Ryd skema */}
-        <button
-          onClick={clearTimetable}
-          style={{
-            padding: "6px 12px",
-            borderRadius: 6,
-            background: "#ef4444",
-            color: "#fff",
-            border: "none",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
-          }}
-        >
-          Ryd skema
-        </button>
       </div>
 
-      {/* Perioder */}
+      {/* Perioder + knapper */}
       <div
-        style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 12 }}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+          marginBottom: 12,
+          gap: 16,
+        }}
       >
-        {PERIOD_GROUPS.map((group) => (
-          <div
-            key={group.title}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
+        {/* Venstre side: perioder */}
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+          {PERIOD_GROUPS.map((group) => (
             <div
-              style={{
-                fontWeight: 700,
-                marginBottom: 4,
-                background: "#EA8115",
-                color: "#fff",
-                padding: "6px 10px",
-                borderRadius: 6,
-                textAlign: "center",
-              }}
+              key={group.title}
+              style={{ display: "flex", flexDirection: "column" }}
             >
-              {group.title}
+              <div
+                style={{
+                  fontWeight: 700,
+                  marginBottom: 4,
+                  background: "#EA8115",
+                  color: "#fff",
+                  padding: "6px 10px",
+                  borderRadius: 6,
+                  textAlign: "center",
+                }}
+              >
+                {group.title}
+              </div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {group.items.map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => handlePeriodChange(p)}
+                    style={{
+                      padding: "6px 10px",
+                      borderRadius: 6,
+                      border: "none",
+                      background: p === period ? "#63c58e" : "#e5e7eb",
+                      color: p === period ? "#fff" : "#111",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {group.items.map((p) => (
-                <button
-                  key={p}
-                  onClick={() => handlePeriodChange(p)}
-                  style={{
-                    padding: "6px 10px",
-                    borderRadius: 6,
-                    border: "none",
-                    background: p === period ? "#63c58e" : "#e5e7eb",
-                    color: p === period ? "#fff" : "#111",
-                    cursor: "pointer",
-                  }}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Højre side: ryd/gem knapper */}
+        <div style={{ display: "flex", gap: 10 }}>
+          <button
+            onClick={clearTimetable}
+            style={{
+              padding: "6px 12px",
+              borderRadius: 6,
+              background: "#ef4444",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Ryd skema
+          </button>
+          <button
+            onClick={downloadImage}
+            style={{
+              padding: "6px 12px",
+              borderRadius: 6,
+              background: "#3b82f6",
+              color: "#fff",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            Gem billede
+          </button>
+        </div>
       </div>
 
+      {/* Skema-container */}
       <div
         style={{
           display: "flex",
@@ -944,6 +979,7 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
 
         {/* Skema */}
         <div
+          id="skema-container"
           style={{
             overflowX: "auto",
             overflowY: "auto",
