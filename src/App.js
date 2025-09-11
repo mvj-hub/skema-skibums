@@ -28,7 +28,7 @@ const BLOCKS = [
     label: "Valgfag",
     bg: "#f8cc66",
     rowStart: 2,
-    rowEnd: 5,
+    rowEnd: 6,
     col: 1,
   },
   {
@@ -64,7 +64,7 @@ const BLOCKS = [
     label: "Valgfag",
     bg: "#dc6c53",
     rowStart: 2,
-    rowEnd: 6,
+    rowEnd: 5,
     col: 5,
   },
 ];
@@ -827,14 +827,14 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
   });
 
   return (
-    <div
-      style={{
-        padding: 16,
-        minHeight: "100vh",
-        fontFamily: "Arial, sans-serif",
-        background: "#bedbd5",
-      }}
-    >
+<div
+  style={{
+    padding: 16,
+    minHeight: "70vh", // mindre høj
+    fontFamily: "Arial, sans-serif",
+    background: "#bedbd5",
+  }}
+>
       {/* Toplinje med titel og ryd-knap */}
       <div
         style={{
