@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 const PERIODS = [
   "Vinter",
   "Forår 1",
@@ -67,7 +67,7 @@ const BLOCKS = [
     col: 5,
   },
 ];
-
+const BLOCK_MAP = Object.fromEntries(BLOCKS.map(b => [b.id, b]));
 const SUBJECT_DEFINITIONS = [
   // VINTER
   {
@@ -741,28 +741,89 @@ const KEEP_RULES = [
     keepSubjectIds: ["skibums-sensommer"],
   },
 ];
+const BlockItem = React.memo(function BlockItem({
+  block,
+  subj,
+  isMobile,
+}) {
+  const startIdx = block.rowStart - 2;
+  const endIdx = block.rowEnd - 2;
 
+  const column = isMobile
+    ? `${startIdx + 2} / ${endIdx + 2}`
+    : `${block.col + 1} / ${block.col + 2}`;
+
+  const row = isMobile
+    ? `${WEEKDAYS.indexOf(block.day) + 2} / ${
+        WEEKDAYS.indexOf(block.day) + 3
+      }`
+    : `${block.rowStart} / ${block.rowEnd}`;
+
+  return (
+    <div
+      style={{
+        gridColumn: column,
+        gridRow: row,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: isMobile ? "flex-start" : "center",
+        borderRadius: 8,
+        padding: isMobile ? "8px 10px" : 8,
+        background: block.bg,
+        textAlign: isMobile ? "left" : "center",
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
+      }}
+    >
+      {subj ? (
+        <div style={{ fontWeight: 700 }}>{subj.title}</div>
+      ) : (
+        <div style={{ color: "#666" }}>{block.label}</div>
+      )}
+    </div>
+  );
+});
 export default function SkemaBygger({ initialPeriod = "Vinter" }) {
   const [period, setPeriod] = useState(initialPeriod);
   const [timetable, setTimetable] = useState({});
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+ useEffect(() => {
+  let timeout;
 
-  const availableSubjects = SUBJECT_DEFINITIONS.filter((s) =>
-    s.periods.includes(period)
-  ).sort(
-    (a, b) =>
-      ["orange", "gul", "blaa", "roed"].indexOf(a.block) -
-      ["orange", "gul", "blaa", "roed"].indexOf(b.block)
-  );
+  const handleResize = () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      setIsMobile(window.innerWidth < 768);
+    }, 150); // debounce
+  };
 
-  function placeSubject(subj) {
-    const newTable = { ...timetable };
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+const availableSubjects = useMemo(() => {
+  return SUBJECT_DEFINITIONS
+    .filter((s) => s.periods.includes(period))
+    .sort(
+      (a, b) =>
+        ["orange", "gul", "blaa", "roed"].indexOf(a.block) -
+        ["orange", "gul", "blaa", "roed"].indexOf(b.block)
+    );
+}, [period]);
+const groupedSubjects = useMemo(() => {
+  return {
+    orange: availableSubjects.filter((s) => s.block === "orange"),
+    gul: availableSubjects.filter((s) => s.block === "gul"),
+    blaa: availableSubjects.filter((s) => s.block === "blaa"),
+    roed: availableSubjects.filter((s) => s.block === "roed"),
+  };
+}, [availableSubjects]);
+  const placeSubject = useCallback((subj) => {
+  setTimetable((prev) => {
+    const newTable = { ...prev };
+
     if (subj.block === "orange") {
       Object.keys(newTable).forEach((k) => {
         if (k.startsWith("orange")) delete newTable[k];
@@ -775,8 +836,10 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
       });
       newTable[subj.block] = subj;
     }
-    setTimetable(newTable);
-  }
+
+    return newTable;
+  });
+}, []);
 
   function handlePeriodChange(next) {
     let kept = {};
@@ -798,32 +861,35 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
     setTimetable({});
   }
 
-  const gridStyle = isMobile
+  const gridStyle = useMemo(() => {
+  return isMobile
     ? {
         display: "grid",
-        gridTemplateColumns: "60px repeat(3, 1fr)", // mindre bredde
+        gridTemplateColumns: "60px repeat(3, 1fr)",
         gridTemplateRows: "40px repeat(5, auto)",
-        gap: 6, // mindre mellemrum
+        gap: 6,
         position: "relative",
       }
     : {
         display: "grid",
-        gridTemplateColumns: "60px repeat(5, 1fr)", // tid-kolonne smallere
+        gridTemplateColumns: "60px repeat(5, 1fr)",
         gridTemplateRows: "40px 120px 120px 120px 40px",
-        gap: 6, // mindre mellemrum
+        gap: 6,
         position: "relative",
       };
+}, [isMobile]);
 
-  const paletteItemStyle = (s) => ({
-    padding: 10,
-    borderRadius: 8,
-    border: "1px solid #ddd",
-    cursor: "pointer",
-    background:
-      s.block === "orange"
-        ? "#FDBA74"
-        : BLOCKS.find((b) => b.id === s.block)?.bg || "#eee",
-  });
+
+const paletteItemStyle = useCallback((s) => ({
+  padding: 10,
+  borderRadius: 8,
+  border: "1px solid #ddd",
+  cursor: "pointer",
+  background:
+    s.block === "orange"
+      ? "#FDBA74"
+      : BLOCK_MAP[s.block]?.bg || "#eee",
+}), []);
 
   return (
     <div
@@ -939,15 +1005,45 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
             paddingRight: 4,
           }}
         >
-          {availableSubjects.map((s) => (
-            <div
-              key={s.id}
-              onClick={() => placeSubject(s)}
-              style={paletteItemStyle(s)}
-            >
-              {s.title}
-            </div>
-          ))}
+{[
+  { key: "orange", title: "Hovedfag" },
+  { key: "gul", title: "Mandag" },
+  { key: "blaa", title: "Tirsdag" },
+  { key: "roed", title: "Fredag" },
+].map((group) => {
+  const items = groupedSubjects[group.key];
+
+  if (!items.length) return null;
+
+  return (
+    <div key={group.key}>
+      {/* Group title */}
+      <div
+        style={{
+          fontWeight: 700,
+          marginTop: 10,
+          marginBottom: 6,
+        marginBottom: 12,
+      borderTop: "1px solid #ddd",
+      paddingTop: 6,
+        }}
+      >
+        {group.title}
+      </div>
+
+      {/* Items */}
+      {items.map((s) => (
+        <div
+          key={s.id}
+          onClick={() => placeSubject(s)}
+          style={paletteItemStyle(s)}
+        >
+          {s.title}
+        </div>
+      ))}
+    </div>
+  );
+})}
           {availableSubjects.length === 0 && (
             <div style={{ color: "#666" }}>Ingen fag i denne periode</div>
           )}
@@ -1035,49 +1131,14 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
             ))}
 
             {/* Fagblokke */}
-            {BLOCKS.map((block) => {
-              const subj = timetable[block.id];
-
-              // Beregn kolonner (tid) for mobil korrekt
-              const startIdx = block.rowStart - 2; // header offset
-              const endIdx = block.rowEnd - 2;
-
-              const column = isMobile
-                ? `${startIdx + 2} / ${endIdx + 2}`
-                : `${block.col + 1} / ${block.col + 2}`;
-
-              const row = isMobile
-                ? `${WEEKDAYS.indexOf(block.day) + 2} / ${
-                    WEEKDAYS.indexOf(block.day) + 3
-                  }`
-                : `${block.rowStart} / ${block.rowEnd}`;
-
-              return (
-                <div
-                  key={block.id}
-                  style={{
-                    gridColumn: column,
-                    gridRow: row,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: isMobile ? "flex-start" : "center",
-                    borderRadius: 8,
-                    padding: isMobile ? "8px 10px" : 8,
-                    background: block.bg,
-                    textAlign: isMobile ? "left" : "center",
-                    width: "100%",
-                    height: "100%",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  {subj ? (
-                    <div style={{ fontWeight: 700 }}>{subj.title}</div>
-                  ) : (
-                    <div style={{ color: "#666" }}>{block.label}</div>
-                  )}
-                </div>
-              );
-            })}
+{BLOCKS.map((block) => (
+  <BlockItem
+    key={block.id}
+    block={block}
+    subj={timetable[block.id]}
+    isMobile={isMobile}
+  />
+))}
           </div>
         </div>
       </div>
