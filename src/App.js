@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import html2canvas from "html2canvas";
 const PERIODS = [
   "Vinter",
   "Forår 1",
@@ -825,18 +824,7 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
         ? "#FDBA74"
         : BLOCKS.find((b) => b.id === s.block)?.bg || "#eee",
   });
-  function downloadImage() {
-    // Find elementet, vi vil tage billede af
-    const skemaElement = document.getElementById("skema-container");
-    if (!skemaElement) return;
 
-    html2canvas(skemaElement).then((canvas) => {
-      const link = document.createElement("a");
-      link.download = `skema-${period}.png`;
-      link.href = canvas.toDataURL();
-      link.click();
-    });
-  }
   return (
     <div
       style={{
@@ -928,19 +916,7 @@ export default function SkemaBygger({ initialPeriod = "Vinter" }) {
           >
             Ryd skema
           </button>
-          <button
-            onClick={downloadImage}
-            style={{
-              padding: "6px 12px",
-              borderRadius: 6,
-              background: "#3b82f6",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            Gem billede
-          </button>
+
         </div>
       </div>
 
