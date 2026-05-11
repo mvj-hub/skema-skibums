@@ -76,7 +76,7 @@ const SUBJECT_DEFINITIONS = [
 
   {
     id: "band-sensommer",
-    title: "Band - sammenspil",
+    title: "Elektronisk musik",
     block: "gul",
     periods: ["Sensommer"],
   },
@@ -94,7 +94,7 @@ const SUBJECT_DEFINITIONS = [
   },
   {
     id: "genbrugsdesign-sensommer",
-    title: "Genbrugsdesign",
+    title: "Linoleumstryk",
     block: "gul",
     periods: ["Sensommer"],
   },
@@ -113,7 +113,7 @@ const SUBJECT_DEFINITIONS = [
   },
   {
     id: "mad-over-ild-sensommer",
-    title: "Mad over ild",
+    title: "Køn, krop og seksualitet",
     block: "roed",
     periods: ["Sensommer"],
   },
@@ -125,7 +125,7 @@ const SUBJECT_DEFINITIONS = [
   },
   {
     id: "vandring-filosofi-sensommer",
-    title: "Vandring og filosofi",
+    title: "Multisport",
     block: "roed",
     periods: ["Sensommer"],
   },
@@ -138,7 +138,7 @@ const SUBJECT_DEFINITIONS = [
 
   {
     id: "multisport-sensommer",
-    title: "Multisport",
+    title: "Bouldering",
     block: "blaa",
     periods: ["Sensommer"],
   },
@@ -150,7 +150,7 @@ const SUBJECT_DEFINITIONS = [
   },
   {
     id: "eksistentiel-sensommer",
-    title: "Eksistentiel vejledning",
+    title: "Svampedyrkning",
     block: "blaa",
     periods: ["Sensommer"],
   },
@@ -168,6 +168,42 @@ const SUBJECT_DEFINITIONS = [
   },
 
   // EFTERÅR 1
+  {
+    id: "hjemmelavet-efteraar1",
+    title: "Life Skills ",
+    block: "orange",
+    periods: ["Efterår 1", "Efterår 2"],
+  },
+  {
+    id: "friluftsliv-efteraar1",
+    title: "Friluftsliv ",
+    block: "orange",
+    periods: ["Efterår 1", "Efterår 2"],
+  },
+  {
+    id: "keramik-hovedfag-efteraar1",
+    title: "Keramik ",
+    block: "orange",
+    periods: ["Efterår 1", "Efterår 2"],
+  },
+  {
+    id: "musik-hovedfag-efteraar1",
+    title: "Musik ",
+    block: "orange",
+    periods: ["Efterår 1", "Efterår 2"],
+  },
+  {
+    id: "bouldering-efteraar1",
+    title: "Bouldering ",
+    block: "orange",
+    periods: ["Efterår 1", "Efterår 2"],
+  },
+  {
+    id: "skibums-efteraar1",
+    title: "Skibums ",
+    block: "orange",
+    periods: ["Efterår 1", "Efterår 2"],
+  },
 
   {
     id: "hej-lege-efteraar1",
@@ -177,7 +213,7 @@ const SUBJECT_DEFINITIONS = [
   },
   {
     id: "dans-teater-efteraar1",
-    title: "Dans og teater",
+    title: "Teater og performance",
     block: "gul",
     periods: ["Efterår 1", "Efterår 2"],
   },
@@ -189,20 +225,20 @@ const SUBJECT_DEFINITIONS = [
   },
   {
     id: "elektronisk-musik-efteraar1",
-    title: "Elektronisk musik",
+    title: "Band / Sammenspil",
     block: "gul",
     periods: ["Efterår 1", "Efterår 2"],
   },
   {
-    id: "kks-efteraar1",
-    title: "Køn, krop og seksualitet",
+    id: "Mundful-efteraar1",
+    title: "Mindful",
     block: "gul",
     periods: ["Efterår 1", "Efterår 2"],
   },
 
   {
     id: "chocolatier-efteraar1",
-    title: "Chocolatier",
+    title: "Chocolatiér",
     block: "roed",
     periods: ["Efterår 1"],
   },
@@ -232,45 +268,50 @@ const SUBJECT_DEFINITIONS = [
   },
 
   {
-    id: "yoga-mindfulness-efteraar1",
-    title: "Yoga og mindfulness",
-    block: "blaa",
-    periods: ["Efterår 1"],
-  },
-  {
-    id: "sang-stemme-efteraar1",
-    title: "Sang og stemme",
-    block: "blaa",
-    periods: ["Efterår 1"],
-  },
-  {
-    id: "svampedyrkning-efteraar1",
-    title: "Svampedyrkning",
-    block: "blaa",
-    periods: ["Efterår 1"],
-  },
-  {
-    id: "bouldering-valgfag-efteraar1",
-    title: "Bouldering",
-    block: "blaa",
-    periods: ["Efterår 1"],
-  },
-  {
-    id: "faellesskabelse-efteraar1",
-    title: "Fællesskabelse",
+    id: "faellesfag",
+    title: "Fællesfag (alle)",
     block: "blaa",
     periods: ["Efterår 1"],
   },
 
   // EFTERÅR 2
+
   {
-    id: "skibums-tysk-efteraar2",
-    title: "Skibums (tysk)",
+    id: "dansefag-efteraar2",
+    title: "Dans med musikken",
     block: "roed",
     periods: ["Efterår 2"],
   },
- 
-
+  {
+    id: "tekstil-efteraar2",
+    title: "Tekstildesign og upcycling",
+    block: "roed",
+    periods: ["Efterår 2"],
+  },
+  {
+    id: "oelbrygning-efteraar2",
+    title: "Ølbrygning",
+    block: "roed",
+    periods: ["Efterår 2"],
+  },
+  {
+    id: "mad-over-ild-efteraar2",
+    title: "Mad over ild",
+    block: "roed",
+    periods: ["Efterår 2"],
+  },
+    {
+    id: "kks-efteraar2",
+    title: "Køn, krop og seksualitet",
+    block: "roed",
+    periods: ["Efterår 2"],
+  },
+  {
+    id: "skibums-tysk-efteraar2",
+    title: "Skibums (tysk)",
+    block: "blaa",
+    periods: ["Efterår 2"],
+  },
   {
     id: "yoga-mindfulness-efteraar2",
     title: "Yoga og mindfulness",
@@ -284,8 +325,8 @@ const SUBJECT_DEFINITIONS = [
     periods: ["Efterår 2"],
   },
   {
-    id: "goer-det-selv-efteraar2",
-    title: "Gør det selv, tør det selv",
+    id: "Filosofi-efteraar2",
+    title: "Filosofi",
     block: "blaa",
     periods: ["Efterår 2"],
   },
@@ -295,13 +336,9 @@ const SUBJECT_DEFINITIONS = [
     block: "blaa",
     periods: ["Efterår 2"],
   },
-  {
-    id: "croquis-efteraar2",
-    title: "Croquis",
-    block: "blaa",
-    periods: ["Efterår 2"],
-  },
+
 ];
+  
 
 const KEEP_RULES = [
     {
