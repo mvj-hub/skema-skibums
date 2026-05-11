@@ -418,6 +418,11 @@ useEffect(() => {
       s.id === "skibums-tysk-efteraar2" &&
       s.periods.includes(period)
   );
+  const faellesfag = SUBJECT_DEFINITIONS.find(
+  (s) =>
+    s.id === "faellesfag" &&
+    s.periods.includes(period)
+);
   setTimetable((prev) => ({
     ...prev,
     "orange-ons": skibums,
@@ -483,7 +488,8 @@ const placeSubject = useCallback((subj) => {
   setTimetable({
     "orange-ons": skibums,
     "orange-tors": skibums,
-    ...(tysk ? { roed: tysk } : {}),
+    ...(tysk ? { blaa: tysk } : {}),
+    ...(faellesfag ? { blaa: faellesfag } : {}),
   });
 }
 
