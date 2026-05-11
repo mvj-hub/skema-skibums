@@ -6,7 +6,7 @@ const PERIODS = [
 ];
 
 const PERIOD_GROUPS = [
-  { title: "Efterår", items: ["Sensommer", "Efterår 1", "Efterår 2"] },
+  { title: "Skibums", items: ["Sensommer", "Efterår 1", "Efterår 2"] },
 ];
 
 const WEEKDAYS = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag"];
