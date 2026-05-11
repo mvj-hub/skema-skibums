@@ -423,6 +423,7 @@ useEffect(() => {
     "orange-ons": skibums,
     "orange-tors": skibums,
     ...(tysk ? { blaa: tysk } : {}),
+      ...(faellesfag ? { blaa: faellesfag } : {}),
   }));
 }, [period]);
   
