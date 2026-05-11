@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+const SkemaBygger = React.lazy(() => import("./SkemaBygger"));
 const PERIODS = [
-  "Vinter",
-  "Forår 1",
-  "Forår 2",
   "Sensommer",
   "Efterår 1",
   "Efterår 2",
 ];
 
 const PERIOD_GROUPS = [
-  { title: "Forår", items: ["Vinter", "Forår 1", "Forår 2"] },
   { title: "Efterår", items: ["Sensommer", "Efterår 1", "Efterår 2"] },
 ];
 
@@ -69,350 +66,11 @@ const BLOCKS = [
 ];
 const BLOCK_MAP = Object.fromEntries(BLOCKS.map(b => [b.id, b]));
 const SUBJECT_DEFINITIONS = [
-  // VINTER
-  {
-    id: "hjemmelavet-vinter",
-    title: "Hjemmelavet - Life Skills (hovedfag)",
-    block: "orange",
-    periods: ["Vinter"],
-  },
-  {
-    id: "friluftsliv-vinter",
-    title: "Friluftsliv (hovedfag)",
-    block: "orange",
-    periods: ["Vinter"],
-  },
-  {
-    id: "keramik-vinter",
-    title: "Keramik (hovedfag)",
-    block: "orange",
-    periods: ["Vinter"],
-  },
-  {
-    id: "Mindful-vinter",
-    title: "Mindful (hovedfag)",
-    block: "orange",
-    periods: ["Vinter"],
-  },
-  {
-    id: "musik-hovedfag-vinter",
-    title: "Musik (hovedfag)",
-    block: "orange",
-    periods: ["Vinter"],
-  },
-  {
-    id: "bouldering-vinter",
-    title: "Bouldering (hovedfag)",
-    block: "orange",
-    periods: ["Vinter"],
-  },
-
-  {
-    id: "band-vinter",
-    title: "Band - sammenspil",
-    block: "gul",
-    periods: ["Vinter"],
-  },
-  {
-    id: "mad-med-mod-vinter",
-    title: "Mad med mod",
-    block: "gul",
-    periods: ["Vinter"],
-  },
-  {
-    id: "permakultur-vinter",
-    title: "Permakultur design",
-    block: "gul",
-    periods: ["Vinter"],
-  },
-  {
-    id: "kks-vinter",
-    title: "Køn, krop og seksualitet",
-    block: "gul",
-    periods: ["Vinter"],
-  },
-  {
-    id: "linoleumstryk-vinter",
-    title: "Linoleumstryk",
-    block: "gul",
-    periods: ["Vinter"],
-  },
-
-  {
-    id: "sommelier-vinter",
-    title: "Sommelier",
-    block: "roed",
-    periods: ["Vinter"],
-  },
-  {
-    id: "vandring-filosofi-vinter",
-    title: "Vandring og filosofi",
-    block: "roed",
-    periods: ["Vinter"],
-  },
-  {
-    id: "yoga-mindfulness-vinter",
-    title: "Yoga og mindfulness",
-    block: "roed",
-    periods: ["Vinter"],
-  },
-  {
-    id: "dansk-kultur-vinter",
-    title: "Dansk sprog og kultur",
-    block: "roed",
-    periods: ["Vinter"],
-  },
-  { id: "salsa-vinter", title: "Salsa", block: "roed", periods: ["Vinter"] },
-
-  {
-    id: "studievejledning-vinter",
-    title: "Studievejledning",
-    block: "blaa",
-    periods: ["Vinter"],
-  },
-  {
-    id: "chocolatier-vinter",
-    title: "Chocolatier",
-    block: "blaa",
-    periods: ["Vinter"],
-  },
-  {
-    id: "faellesskabelse-vinter",
-    title: "Fællesskabelse",
-    block: "blaa",
-    periods: ["Vinter"],
-  },
-  {
-    id: "bouldering-valgfag-vinter",
-    title: "Bouldering",
-    block: "blaa",
-    periods: ["Vinter"],
-  },
-  {
-    id: "sang-stemme-vinter",
-    title: "Sang og stemme",
-    block: "blaa",
-    periods: ["Vinter"],
-  },
-
-  // FORÅR 1
-  {
-    id: "hjemmelavet-foraar1",
-    title: "Hjemmelavet - Vild mad (hovedfag)",
-    block: "orange",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "friluftsliv-foraar1",
-    title: "Friluftsliv (hovedfag)",
-    block: "orange",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "bouldering-foraar1",
-    title: "Bouldering (hovedfag)",
-    block: "orange",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "musik-hovedfag-foraar1",
-    title: "Musik (hovedfag)",
-    block: "orange",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "festival-projektledelse-foraar1",
-    title: "Festival & projektledelse (hovedfag)",
-    block: "orange",
-    periods: ["Forår 1", "Forår 2"],
-  },
-
-  {
-    id: "elektronisk-musik-foraar1",
-    title: "Elektronisk musik",
-    block: "gul",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "havkajak-foraar1",
-    title: "Havkajak",
-    block: "gul",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "kks-foraar1",
-    title: "Køn, krop og seksualitet",
-    block: "gul",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "verdensdans-foraar1",
-    title: "Verdensdans",
-    block: "gul",
-    periods: ["Forår 1", "Forår 2"],
-  },
-  {
-    id: "keramik-foraar1",
-    title: "Keramik",
-    block: "gul",
-    periods: ["Forår 1", "Forår 2"],
-  },
-
-  {
-    id: "croquis-foraar1",
-    title: "Croquis",
-    block: "roed",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "teater-foraar1",
-    title: "Teater",
-    block: "roed",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "oelbrygning-foraar1",
-    title: "Ølbrygning",
-    block: "roed",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "mad-over-ild-foraar1",
-    title: "Mad over ild",
-    block: "roed",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "yoga-mindfulness-foraar1",
-    title: "Yoga og mindfulness",
-    block: "roed",
-    periods: ["Forår 1"],
-  },
-
-  {
-    id: "traehaandvaerk-foraar1",
-    title: "Træhåndværk",
-    block: "blaa",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "bouldering-valgfag-foraar1",
-    title: "Bouldering",
-    block: "blaa",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "skole-demokrati-foraar1",
-    title: "Skoledemokratiet",
-    block: "blaa",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "kor-foraar1",
-    title: "Kor (sang for alle)",
-    block: "blaa",
-    periods: ["Forår 1"],
-  },
-  {
-    id: "kunstfag-foraar1",
-    title: "Kunstfag",
-    block: "blaa",
-    periods: ["Forår 1"],
-  },
-
-  // FORÅR 2
-  { id: "salsa-foraar2", title: "Salsa", block: "roed", periods: ["Forår 2"] },
-  {
-    id: "havkajak-foraar2",
-    title: "Havkajak",
-    block: "roed",
-    periods: ["Forår 2"],
-  },
-  {
-    id: "havebrug-foraar2",
-    title: "Havebrug",
-    block: "roed",
-    periods: ["Forår 2"],
-  },
-  {
-    id: "naturkraft-foraar2",
-    title: "Naturkraft",
-    block: "roed",
-    periods: ["Forår 2"],
-  },
-  {
-    id: "vandring-filosofi-foraar2",
-    title: "Vandring og filosofi",
-    block: "roed",
-    periods: ["Forår 2"],
-  },
-
-  { id: "biavl-foraar2", title: "Biavl", block: "blaa", periods: ["Forår 2"] },
-  {
-    id: "craftmanship-foraar2",
-    title: "Craftmanship",
-    block: "blaa",
-    periods: ["Forår 2"],
-  },
-  {
-    id: "tegning-foraar2",
-    title: "Tegning",
-    block: "blaa",
-    periods: ["Forår 2"],
-  },
-  {
-    id: "eksistentiel-foraar2",
-    title: "Eksistentiel vejledning",
-    block: "blaa",
-    periods: ["Forår 2"],
-  },
-  {
-    id: "hej-lege-foraar2",
-    title: "Hej! Skal vi lege?",
-    block: "blaa",
-    periods: ["Forår 2"],
-  },
-  {
-    id: "faellesskabelse-foraar2",
-    title: "Fællesskabelse",
-    block: "blaa",
-    periods: ["Forår 2"],
-  },
-
+ 
   // SENSOMMER
   {
-    id: "hjemmelavet-sensommer",
-    title: "Hjemmelavet - Vild mad (hovedfag)",
-    block: "orange",
-    periods: ["Sensommer"],
-  },
-  {
-    id: "friluftsliv-sensommer",
-    title: "Friluftsliv (hovedfag)",
-    block: "orange",
-    periods: ["Sensommer"],
-  },
-  {
-    id: "keramik-sensommer",
-    title: "Keramik (hovedfag)",
-    block: "orange",
-    periods: ["Sensommer"],
-  },
-  {
-    id: "musik-hovedfag-sensommer",
-    title: "Musik (hovedfag)",
-    block: "orange",
-    periods: ["Sensommer"],
-  },
-  {
-    id: "bouldering-sensommer",
-    title: "Bouldering (hovedfag)",
-    block: "orange",
-    periods: ["Sensommer"],
-  },
-  {
     id: "skibums-sensommer",
-    title: "Skibums (hovedfag)",
+    title: "Skibums ",
     block: "orange",
     periods: ["Sensommer", "Efterår 1", "Efterår 2"],
   },
@@ -511,42 +169,6 @@ const SUBJECT_DEFINITIONS = [
   },
 
   // EFTERÅR 1
-  {
-    id: "hjemmelavet-efteraar1",
-    title: "Hjemmelavet - Life Skills (hovedfag)",
-    block: "orange",
-    periods: ["Efterår 1", "Efterår 2"],
-  },
-  {
-    id: "friluftsliv-efteraar1",
-    title: "Friluftsliv (hovedfag)",
-    block: "orange",
-    periods: ["Efterår 1", "Efterår 2"],
-  },
-  {
-    id: "keramik-hovedfag-efteraar1",
-    title: "Keramik (hovedfag)",
-    block: "orange",
-    periods: ["Efterår 1", "Efterår 2"],
-  },
-  {
-    id: "musik-hovedfag-efteraar1",
-    title: "Musik (hovedfag)",
-    block: "orange",
-    periods: ["Efterår 1", "Efterår 2"],
-  },
-  {
-    id: "bouldering-efteraar1",
-    title: "Bouldering (hovedfag)",
-    block: "orange",
-    periods: ["Efterår 1", "Efterår 2"],
-  },
-  {
-    id: "skibums-efteraar1",
-    title: "Skibums (hovedfag)",
-    block: "orange",
-    periods: ["Efterår 1", "Efterår 2"],
-  },
 
   {
     id: "hej-lege-efteraar1",
@@ -648,30 +270,7 @@ const SUBJECT_DEFINITIONS = [
     block: "roed",
     periods: ["Efterår 2"],
   },
-  {
-    id: "dansefag-efteraar2",
-    title: "Dansefag",
-    block: "roed",
-    periods: ["Efterår 2"],
-  },
-  {
-    id: "linoleumstryk-efteraar2",
-    title: "Linoleumstryk",
-    block: "roed",
-    periods: ["Efterår 2"],
-  },
-  {
-    id: "oelbrygning-efteraar2",
-    title: "Ølbrygning",
-    block: "roed",
-    periods: ["Efterår 2"],
-  },
-  {
-    id: "mad-over-ild-efteraar2",
-    title: "Mad over ild",
-    block: "roed",
-    periods: ["Efterår 2"],
-  },
+ 
 
   {
     id: "yoga-mindfulness-efteraar2",
@@ -706,39 +305,15 @@ const SUBJECT_DEFINITIONS = [
 ];
 
 const KEEP_RULES = [
-  { from: "Forår 1", to: "Forår 2", blocks: ["gul", "orange"] },
-  { from: "Forår 2", to: "Forår 1", blocks: ["gul", "orange"] },
-  { from: "Efterår 1", to: "Efterår 2", blocks: ["gul", "orange"] },
-  { from: "Efterår 2", to: "Efterår 1", blocks: ["gul", "orange"] },
-  {
-    from: "Sensommer",
-    to: "Efterår 1",
-    blocks: [],
-    keepSubjectIds: ["skibums-sensommer"],
-  },
-  {
-    from: "Sensommer",
-    to: "Efterår 2",
-    blocks: [],
-    keepSubjectIds: ["skibums-sensommer"],
-  },
-  {
+    {
     from: "Efterår 1",
-    to: "Sensommer",
-    blocks: [],
-    keepSubjectIds: ["skibums-sensommer"],
+    to: "Efterår 2",
+    blocks: ["gul"],
   },
   {
     from: "Efterår 2",
-    to: "Sensommer",
-    blocks: [],
-    keepSubjectIds: ["skibums-sensommer"],
-  },
-  {
-    from: "Efterår 1",
-    to: "Efterår 2",
-    blocks: [],
-    keepSubjectIds: ["skibums-sensommer"],
+    to: "Efterår 1",
+    blocks: ["gul"],
   },
 ];
 const BlockItem = React.memo(function BlockItem({
@@ -784,7 +359,7 @@ const BlockItem = React.memo(function BlockItem({
     </div>
   );
 });
-export default function SkemaBygger({ initialPeriod = "Vinter" }) {
+export default function SkemaBygger({ initialPeriod = "Sensommer" }) {
   const [period, setPeriod] = useState(initialPeriod);
   const [timetable, setTimetable] = useState({});
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -820,12 +395,31 @@ const groupedSubjects = useMemo(() => {
     roed: availableSubjects.filter((s) => s.block === "roed"),
   };
 }, [availableSubjects]);
+useEffect(() => {
+  const skibums = SUBJECT_DEFINITIONS.find(
+    (s) =>
+      s.id === "skibums-sensommer" &&
+      s.periods.includes(period)
+  );
+  const tysk = SUBJECT_DEFINITIONS.find(
+    (s) =>
+      s.id === "skibums-tysk-efteraar2" &&
+      s.periods.includes(period)
+  );
+  setTimetable((prev) => ({
+    ...prev,
+    "orange-ons": skibums,
+    "orange-tors": skibums,
+    ...(tysk ? { roed: tysk } : {}),
+  }));
+}, [period]);
+  
   const placeSubject = useCallback((subj) => {
   setTimetable((prev) => {
     const newTable = { ...prev };
 
-    if (subj.block === "orange") {
-      Object.keys(newTable).forEach((k) => {
+if (subj.block === "orange") return prev;
+    Object.keys(newTable).forEach((k) => {
         if (k.startsWith("orange")) delete newTable[k];
       });
       newTable["orange-ons"] = subj;
@@ -857,9 +451,23 @@ const groupedSubjects = useMemo(() => {
     setPeriod(next);
   }
 
-  function clearTimetable() {
-    setTimetable({});
-  }
+ function clearTimetable() {
+  const skibums = SUBJECT_DEFINITIONS.find(
+    (s) => s.id === "skibums-sensommer"
+  );
+
+  const tysk = SUBJECT_DEFINITIONS.find(
+    (s) =>
+      s.id === "skibums-tysk-efteraar2" &&
+      s.periods.includes(period)
+  );
+
+  setTimetable({
+    "orange-ons": skibums,
+    "orange-tors": skibums,
+    ...(tysk ? { roed: tysk } : {}),
+  });
+}
 
   const gridStyle = useMemo(() => {
   return isMobile
@@ -897,7 +505,7 @@ const paletteItemStyle = useCallback((s) => ({
         padding: 16,
         minHeight: "70vh", // mindre høj
         fontFamily: "Arial, sans-serif",
-        background: "#bedbd5",
+        background: "transparent",
       }}
     >
       {/* Toplinje med titel og ryd-knap */}
@@ -1006,7 +614,6 @@ const paletteItemStyle = useCallback((s) => ({
           }}
         >
 {[
-  { key: "orange", title: "Hovedfag" },
   { key: "gul", title: "Mandag" },
   { key: "blaa", title: "Tirsdag" },
   { key: "roed", title: "Fredag" },
