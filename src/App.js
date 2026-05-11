@@ -311,31 +311,7 @@ const SUBJECT_DEFINITIONS = [
     title: "Skibums (tysk)",
     block: "blaa",
     periods: ["Efterår 2"],
-  },
-  {
-    id: "yoga-mindfulness-efteraar2",
-    title: "Yoga og mindfulness",
-    block: "blaa",
-    periods: ["Efterår 2"],
-  },
-  {
-    id: "studievejledning-efteraar2",
-    title: "Studievejledning",
-    block: "blaa",
-    periods: ["Efterår 2"],
-  },
-  {
-    id: "Filosofi-efteraar2",
-    title: "Filosofi",
-    block: "blaa",
-    periods: ["Efterår 2"],
-  },
-  {
-    id: "bouldering-valgfag-efteraar2",
-    title: "Bouldering",
-    block: "blaa",
-    periods: ["Efterår 2"],
-  },
+  }
 
 ];
   
