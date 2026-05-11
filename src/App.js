@@ -422,7 +422,7 @@ useEffect(() => {
     ...prev,
     "orange-ons": skibums,
     "orange-tors": skibums,
-    ...(tysk ? { roed: tysk } : {}),
+    ...(tysk ? { blaa: tysk } : {}),
   }));
 }, [period]);
   
