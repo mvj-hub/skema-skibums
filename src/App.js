@@ -527,8 +527,7 @@ const paletteItemStyle = useCallback((s) => ({
     <div
       style={{
         padding: 16,
-        minHeight: "70vh", // mindre høj
-        fontFamily: "Arial, sans-serif",
+        minHeight: "auto", // mindre høj
         background: "transparent",
       }}
     >
