@@ -423,7 +423,7 @@ useEffect(() => {
     "orange-ons": skibums,
     "orange-tors": skibums,
     ...(tysk ? { blaa: tysk } : {}),
-      ...(faellesfag ? { blaa: faellesfag } : {}),
+    ...(faellesfag ? { blaa: faellesfag } : {}),
   }));
 }, [period]);
   
@@ -474,6 +474,11 @@ const placeSubject = useCallback((subj) => {
       s.id === "skibums-tysk-efteraar2" &&
       s.periods.includes(period)
   );
+   const faellesfag = SUBJECT_DEFINITIONS.find(
+  (s) =>
+    s.id === "faellesfag" &&
+    s.periods.includes(period)
+);
 
   setTimetable({
     "orange-ons": skibums,
