@@ -414,22 +414,22 @@ useEffect(() => {
   }));
 }, [period]);
   
-  const placeSubject = useCallback((subj) => {
+const placeSubject = useCallback((subj) => {
   setTimetable((prev) => {
+    // Hovedfag må ikke ændres manuelt
+    if (subj.block === "orange") return prev;
+
     const newTable = { ...prev };
 
-if (subj.block === "orange") return prev;
+    // Fjern eksisterende fag i samme blok
     Object.keys(newTable).forEach((k) => {
-        if (k.startsWith("orange")) delete newTable[k];
-      });
-      newTable["orange-ons"] = subj;
-      newTable["orange-tors"] = subj;
-    } else {
-      Object.keys(newTable).forEach((k) => {
-        if (k.startsWith(subj.block)) delete newTable[k];
-      });
-      newTable[subj.block] = subj;
-    }
+      if (k.startsWith(subj.block)) {
+        delete newTable[k];
+      }
+    });
+
+    // Tilføj nyt fag
+    newTable[subj.block] = subj;
 
     return newTable;
   });
