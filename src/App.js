@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-const SkemaBygger = React.lazy(() => import("./SkemaBygger"));
 const PERIODS = [
   "Sensommer",
   "Efterår 1",
